@@ -26,5 +26,5 @@
 .hyde-text::-webkit-scrollbar{width:10px}.hyde-text::-webkit-scrollbar-track{background:#122028;border-left:1px solid #89aca740}.hyde-text::-webkit-scrollbar-thumb{background:#72958b;border:2px solid #122028;border-radius:5px}.hyde-text::-webkit-scrollbar-thumb:hover{background:#a6cbc2}
 .hyde-text span{display:block;opacity:0;transition:opacity .3s}.hyde-text span.revealed{opacity:1}
 .hyde-briefing footer{display:flex;justify-content:space-between;margin-top:20px;gap:20px}
-.hyde-playback,.hyde-navigation{display:flex;gap:12px}.hyde-briefing .metal{width:auto!important;min-width:145px;padding:12px 28px!important;height:52px!important;font-size:16px!important;line-height:1.3!important}
+.hyde-playback,.hyde-navigation{display:flex;gap:12px}.hyde-briefing .metal{width:auto!important;min-width:145px;padding:12px 44px!important;height:52px!important;font-size:16px!important;line-height:1.3!important}
 .hyde-briefing [hidden]{display:none!important}.hyde-briefing button:focus-visible{outline:2px solid #d3fff0;outline-offset:4px}

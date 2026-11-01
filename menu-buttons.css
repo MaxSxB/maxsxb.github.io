@@ -6,7 +6,7 @@
   font-size:calc(var(--font-size) * 1.3);letter-spacing:.055em;text-transform:none;line-height:1.5;
   transition:background .15s,border-color .15s,color .15s,transform .15s;
 }
-button.metal::after,button.list-row::after{content:'›';position:absolute;right:16px;top:50%;transform:translateY(-50%);font:300 28px system-ui;color:#91b7b1}
+button.metal::after,button.list-row::after{content:'';position:absolute;right:20px;top:50%;width:7px;height:7px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:translateY(-50%) rotate(45deg);color:#91b7b1;pointer-events:none}
 .metal:hover:not(:disabled),.metal:focus-visible,.metal.selected,button.list-row:hover:not(:disabled),button.list-row:focus-visible,button.list-row.selected,#studio .close:hover{
   background:linear-gradient(110deg,#b5d5cbeb,#80aaa4cf);border-color:#d5eee4;color:#081a20;filter:none;
   box-shadow:0 6px 22px #0002;transform:translateX(4px);
