@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metropolis Dawn · Ghorkovs</title>
+<link rel="stylesheet" href="../../../assets/campaign-ghorkov/carte-interactive.css">
+<svg class="terrain-filters" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="terrain-tone" x="0" y="0" width="1" height="1" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+   <feImage href="../../../assets/campaign-ghorkov/calque-volcan-grade-v2.png" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="volcano-mask"/>
+   <feColorMatrix id="volcano-saturation" in="SourceGraphic" type="saturate" values="2.05" result="volcano-color"/>
+   <feComposite in="volcano-color" in2="volcano-mask" operator="in" result="volcano-matched"/>
+   <feComposite in="SourceGraphic" in2="volcano-mask" operator="out" result="other-terrain"/>
+   <feComposite in="volcano-matched" in2="other-terrain" operator="arithmetic" k2="1" k3="1"/>
+   <!-- Relever les tons moyens en luminance sans filtrage spatial. -->
+   <feColorMatrix values=".2126 .7152 .0722 0 0  -.114572 -.385428 .5 0 .5  .5 -.454153 -.045847 0 .5  0 0 0 1 0"/>
+   <feComponentTransfer>
+    <feFuncR type="gamma" amplitude="1" exponent=".84" offset="0"/>
+   </feComponentTransfer>
+   <feColorMatrix values="1 0 1.5748 0 -.7874  1 -.187324 -.468124 0 .327724  1 1.8556 0 0 -.9278  0 0 0 1 0"/>
+   <!-- Nuance rouge discrète : un quart de la correction précédente. -->
+   <feColorMatrix id="rose-tone" values="1.00611225 .020562 .00207575 0 0  -.002273 .9923535 -.000771925 0 0  .00451775 .015198 1.00153425 0 0  0 0 0 1 0"/>
+  </filter>
+ </defs>
+</svg>
+<link rel="stylesheet" href="campaign-hud.css">
+<style>#mission-title,#tools{display:none!important}.campaign-hud{z-index:2}.campaign-heading{font-size:1.2cqw;max-width:26%}.campaign-nav a{margin:0}</style>
+<main id="map" aria-label="Ghorkov campaign map">
+ <div id="landscape">
+ <img id="terrain" src="../../../assets/campaign-ghorkov/grading-resistance-eaux-v2.png" alt="">
+ <img id="continental" class="relief" src="../../../assets/campaign-ghorkov/calque-continental-grade-v2.png" alt="">
+ <img id="volcan" class="relief" src="../../../assets/campaign-ghorkov/calque-volcan-grade-v2.png" alt="">
+ <img class="background-edit" src="../../../assets/campaign-ghorkov/calque-effacements-fond.png" alt="">
+ <img class="background-edit" src="../../../assets/campaign-ghorkov/calque-iles-og.png" alt="">
+ <img id="global-render" src="../../../assets/campaign-ghorkov/dynamique-reliefs-v3/rendus/noirs-adoucis/retouche/grade-11.webp" alt="">
+ <img id="west-upper" class="western-relief" data-relief="superieur" src="../../../assets/campaign-ghorkov/raccords-ouest-v4/calque-ouest-superieur-grade.png" alt="">
+ <img id="west-lower" class="western-relief" data-relief="inferieur" src="../../../assets/campaign-ghorkov/raccords-ouest-v4/calque-ouest-inferieur-grade.png" alt="">
+ </div>
+ <img id="hover-terrain" class="map-overlay" src="../../../assets/campaign-ghorkov/dynamique-reliefs-v3/rendus/noirs-adoucis/retouche/grade-11.webp" alt="">
+ <img id="west-upper-hover" class="map-overlay western-hover" data-relief="superieur" src="../../../assets/campaign-ghorkov/raccords-ouest-v4/calque-ouest-superieur-grade.png" alt="">
+ <img id="west-lower-hover" class="map-overlay western-hover" data-relief="inferieur" src="../../../assets/campaign-ghorkov/raccords-ouest-v4/calque-ouest-inferieur-grade.png" alt="">
+ <canvas id="mission-tint" class="map-overlay" width="1919" height="1079"></canvas>
+ <img id="decor-grid" class="map-overlay" src="../../../assets/campaign-ghorkov/quadrillage-fond.png" alt="">
+ <canvas id="mission-grid-canvas" class="map-overlay" width="1919" height="1079"></canvas>
+ <canvas id="outside-shade" class="map-overlay" width="1919" height="1079"></canvas>
+ <canvas id="mission-borders" class="map-overlay" width="1919" height="1079"></canvas>
+ <section id="mission-title"><span>METROPOLIS DAWN · GHORKOVS</span><h2>Survolez un territoire</h2><p>16 missions · découpage OG</p></section>
+</main>
+<details id="tools">
+ <summary>Personnaliser la carte</summary>
+ <label for="background">Fond affiché</label>
+ <select id="background">
+  <option value="grading-resistance-eaux-v2.png">Fond préparé · eaux traitées</option>
+  <option value="grading-resistance-v1.png">Grading seul</option>
+  <option value="base-satellite.png">Satellite original</option>
+ </select>
+ <fieldset>
+  <legend>Reliefs · contrôle d’intégration</legend>
+  <label><input type="checkbox" data-layer="continental" checked> Faille continentale · nouvel essai</label>
+  <label><input type="checkbox" data-layer="volcan" checked> Île validée</label>
+  <label><input type="checkbox" data-west-layer="west-upper" checked> Relief ouest supérieur</label>
+  <label><input type="checkbox" data-west-layer="west-lower" checked> Relief ouest inférieur</label>
+  <label><input id="grading" type="checkbox" checked> Harmonisation des reliefs</label>
+  <label><input id="retouch" type="checkbox" checked> Retouches du fond et îles OG</label>
+  <label><input id="soft-blacks" type="checkbox" checked> Noirs adoucis des reliefs</label>
+ </fieldset>
+ <label for="global-grade">Rendu Ghorkov · brun-rouge et contraste</label>
+ <input id="global-grade" type="range" min="0" max="100" value="100"><output id="global-grade-value">100 %</output>
+ <fieldset>
+  <legend>Contours et missions</legend>
+  <label>Frontières <input id="border-alpha" type="range" min="0" max="100" value="75"></label>
+  <label>Épaisseur <input id="border-width" type="range" min="1" max="5" step=".1" value="3"></label>
+  <label>Masque périphérique <input id="outside-opacity" type="range" min="0" max="70" value="48"></label>
+  <label><input id="mission-grid" type="checkbox" checked> Quadrillage des missions</label>
+  <label><input id="all-lit" type="checkbox"> Surbrillance complète</label>
+  <label><input id="mission-numbers" type="checkbox"> Numéros des missions</label>
+  <details id="missions-settings"><summary>Missions affichées · <b id="mission-count">16 / 16</b></summary>
+   <div class="mission-buttons"><button id="show-missions">Tout afficher</button><button id="hide-missions">Tout masquer</button></div>
+   <div id="mission-list"></div>
+  </details>
+ </fieldset>
+ <a href="../../../assets/campaign-ghorkov/raccords-ouest-v4/carte.png" target="_blank">Voir l’image avec les deux reliefs incrustés</a>
+ <a id="render-link" href="../../../assets/campaign-ghorkov/dynamique-reliefs-v3/rendus/noirs-adoucis/retouche/grade-11.webp" target="_blank">Voir le fond sans les deux reliefs occidentaux</a>
+ <a id="image-link" href="../../../assets/campaign-ghorkov/grading-resistance-eaux-v2.png" target="_blank">Ouvrir l’image à sa taille native</a>
+ <p>1919 × 1079 · H pour masquer ou afficher les outils</p>
+</details>
+<script src="../../../assets/locale-en.js"></script>
+<script src="../../../assets/briefings-xp/campaigns.js"></script>
+<script src="../../../assets/campaign-ghorkov/carte-missions.js"></script>
+<script src="campaign-hud.js"></script>
+<script src="campaign-ghorkov.js"></script>
+<script src="../../../assets/campaign-ghorkov/mission-overlay.js"></script>
+<script src="../../../assets/campaign-ghorkov/carte-interactive.js"></script>
+</html>

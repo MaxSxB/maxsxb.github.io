@@ -1,0 +1,26 @@
+@font-face{font-family:Campaign;src:url('../../../assets/Xolonium-Regular.otf')}
+#map{container-type:inline-size}
+.campaign-hud{position:absolute;inset:0;pointer-events:none;color:#e7eeeb;font-family:Campaign,system-ui,sans-serif}
+.campaign-hud::before{content:"";position:absolute;inset:0 auto 0 0;width:27%;background:linear-gradient(90deg,rgba(4,13,18,.78),rgba(4,13,18,.35) 60%,transparent)}
+.campaign-heading{position:absolute;left:2.8%;top:6%;margin:0;font-size:1.5cqw;font-weight:400;letter-spacing:.16em;text-transform:uppercase}
+.campaign-heading span{display:block;margin-bottom:1cqw;font:500 .58cqw system-ui;letter-spacing:.3em;color:#9abcb9}
+.campaign-nav{position:absolute;left:2.8%;top:34%;width:15%;display:grid;gap:.85cqw;pointer-events:auto}
+.campaign-nav :is(a,summary,button){position:relative;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;min-height:4.7cqw;padding:1cqw 1.15cqw;color:#dce5e2;text-decoration:none;font-size:.78cqw;line-height:1.65;letter-spacing:.055em;background:linear-gradient(110deg,rgba(13,27,32,.9),rgba(14,29,34,.6));border:1px solid #b1d1cb30;border-left:2px solid #87b5b273;box-shadow:0 .3cqw 1.2cqw #0002;transition:background .15s,border-color .15s,color .15s,transform .15s}
+.campaign-nav :is(a,summary,button)::after{content:'›';font:300 1.5cqw system-ui;color:#91b7b1;margin-left:.6cqw}
+.campaign-nav :is(a,summary,button):hover,.campaign-nav :is(a,summary,button):focus-visible{background:linear-gradient(110deg,#b5d5cbeb,#80aaa4cf);border-color:#d5eee4;color:#081a20;transform:translateX(.25cqw);outline:2px solid #d5eee4;outline-offset:3px}
+.campaign-nav :is(a,summary,button):hover::after,.campaign-nav :is(a,summary,button):focus-visible::after{color:#173e42}
+.campaign-mission{position:absolute;left:2.8%;bottom:6%;width:21%;box-sizing:border-box;padding:1.3cqw 1cqw 1.4cqw 1.15cqw;border-left:2px solid #a8d1c8;background:linear-gradient(90deg,#07151be8,#07151ba6 75%,transparent);text-shadow:0 2px 8px #0008}
+.campaign-mission-meta{margin:0 0 .8cqw;font:500 .58cqw system-ui;letter-spacing:.2em;text-transform:uppercase;color:#a4c8c1}
+.campaign-mission-title{margin:0;font-size:1.6cqw;font-weight:400;line-height:1.25;overflow-wrap:anywhere;text-wrap:balance}
+.campaign-mission-hint{margin:1cqw 0 0;font:400 .65cqw system-ui;color:#acbfbd;line-height:1.5}
+.campaign-mission[data-active="false"] .campaign-mission-title{font-size:1.1cqw;color:#c0ceca}
+@media(prefers-reduced-motion:reduce){.campaign-nav :is(a,summary,button){transition:none}}
+
+.campaign-picker{position:relative}
+.campaign-picker summary{list-style:none;cursor:pointer}
+.campaign-picker summary::-webkit-details-marker{display:none}
+.campaign-picker[open]>summary::after{transform:rotate(90deg)}
+.campaign-choices{position:absolute;left:calc(100% + .85cqw);top:0;width:23cqw;display:grid;gap:.85cqw;animation:campaign-unfold .18s ease-out}
+.campaign-choices button{width:100%;font-family:inherit;text-align:left;cursor:pointer}
+@keyframes campaign-unfold{from{opacity:0;transform:translateX(-.5cqw)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.campaign-choices{animation:none}}

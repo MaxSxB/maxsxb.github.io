@@ -1,0 +1,11 @@
+/* Réglages artistiques indépendants du moteur. Export possible depuis l’atelier. */
+:root {
+  --accent: #66aeb1;
+  --button-color: #526e79;
+  --button-width: 640px;
+  --button-height: 44px;
+  --font-size: 18px;
+  --brightness: .82;
+  --panel-opacity: .94;
+  --menu-background: url('assets/menu-1080-soft.png');
+}

@@ -1,0 +1,30 @@
+.hyde-briefing{position:absolute;inset:60px 90px 75px;color:#d6e5e2;font-family:Xolonium,sans-serif;text-shadow:0 2px 8px #000}
+.hyde-briefing header{height:115px;border-bottom:1px solid #8ab8b650;margin-bottom:24px;position:relative}
+.hyde-kicker{font-size:13px;letter-spacing:3px;color:#8eb6b3}
+.hyde-briefing h1{font-size:44px;letter-spacing:3px;margin:9px 0 0;color:#e2efed;text-transform:uppercase}
+.hyde-subtitle{display:block;margin-top:9px;color:#9cafac;letter-spacing:2px}
+.hyde-content{display:grid;grid-template-columns:720px 1fr;gap:50px;height:746px}
+.hyde-map-frame{position:relative;width:720px;height:720px;border:1px solid #82bcb968;background:#101d21;box-shadow:0 20px 70px #0008;overflow:hidden}
+.hyde-map-surface{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.hyde-marker.key{z-index:3}
+#hyde-map{display:block;width:100%;height:100%;image-rendering:auto;filter:saturate(.6)}
+.hyde-map-lines,.hyde-markers{position:absolute;inset:0;width:100%;height:100%}
+.hyde-map-lines{pointer-events:none}.hyde-map-lines path{stroke:#c8e4df88;fill:none;stroke-width:1}
+.hyde-markers{pointer-events:none}.hyde-marker{pointer-events:auto;position:absolute;transform:translate(-50%,-50%);width:64px;height:64px;padding:0;border:0;background:transparent;cursor:pointer;box-shadow:none}
+.hyde-marker img{display:block;width:100%;height:100%;pointer-events:none}.hyde-marker.active{z-index:2}.hyde-marker.active.blink img{opacity:0}
+.hyde-map-caption{display:flex;justify-content:space-between;padding-top:13px;color:#8eaaa7;font-size:11px;letter-spacing:2px}
+.hyde-information{display:flex;flex-direction:column;min-width:0;gap:22px;margin-top:-139px}
+.hyde-object{height:334px;display:grid;grid-template-columns:330px 1fr;align-items:center;border-bottom:1px solid #7ca8a944;background:linear-gradient(100deg,#071216b8,#07121645)}
+.hyde-model-wrap{height:330px;position:relative;background:radial-gradient(ellipse,#759d9526,transparent 66%)}
+#hyde-model{width:330px;height:330px}.hyde-model-wrap>span{position:absolute;bottom:14px;left:20px;color:#82a09c;letter-spacing:2px;font-size:10px}
+.hyde-object-copy{padding:10px 24px}.hyde-object-title{font-size:25px;line-height:1.4;margin:18px 0;color:#e3eeea}.hyde-object-detail{font-size:14px;line-height:1.8;color:#a3b9b5;min-height:70px}
+.hyde-steps{display:flex;gap:7px;flex-wrap:wrap}.hyde-steps button{border:1px solid #8fb5af55;color:#9ab8b3;background:#0d2026;padding:8px 7px;font:12px Xolonium;cursor:pointer}.hyde-steps button:disabled{opacity:.25;cursor:default}.hyde-steps button.active{color:#e1fff6;border-color:#b2dfd5;background:#39645a70}
+.hyde-orders{min-height:0;flex:1;background:linear-gradient(115deg,#08171eea,#08171ec9);border-left:2px solid #89aca780;border-bottom:1px solid #89aca780;padding:20px 0 20px 25px;display:flex;flex-direction:column}
+.hyde-orders-heading{font-size:11px;letter-spacing:2px;color:#8fb5af;display:flex;justify-content:space-between;margin:0 25px 17px 0;align-items:center}
+.hyde-text-all{font:12px Xolonium;color:#cadfda;background:transparent;border:0;border-bottom:1px solid #91b5ad77;padding:5px;cursor:pointer}
+.hyde-text{flex:1;min-height:0;font-size:19px;line-height:30px;overflow-y:scroll;padding-right:14px}
+.hyde-text::-webkit-scrollbar{width:10px}.hyde-text::-webkit-scrollbar-track{background:#122028;border-left:1px solid #89aca740}.hyde-text::-webkit-scrollbar-thumb{background:#72958b;border:2px solid #122028;border-radius:5px}.hyde-text::-webkit-scrollbar-thumb:hover{background:#a6cbc2}
+.hyde-text span{display:block;opacity:0;transition:opacity .3s}.hyde-text span.revealed{opacity:1}
+.hyde-briefing footer{display:flex;justify-content:space-between;margin-top:20px;gap:20px}
+.hyde-playback,.hyde-navigation{display:flex;gap:12px}.hyde-briefing .metal{width:auto!important;min-width:145px;padding:12px 28px!important;height:52px!important;font-size:16px!important;line-height:1.3!important}
+.hyde-briefing [hidden]{display:none!important}.hyde-briefing button:focus-visible{outline:2px solid #d3fff0;outline-offset:4px}
