@@ -6,6 +6,15 @@ if (localStorage.getItem(key) === null) localStorage.setItem(key, JSON.stringify
 const state = JSON.parse(localStorage.getItem(key));
 let draft, binding = null, selectedSave = -1, networkMode = 'host', ready = false, route = 'home', revision = 0, toastTimer;
 const audio = new Audio('assets/click.wav');
+const menuMusic = new Audio('assets/menu-music.ogg');
+menuMusic.loop=true;
+function syncMenuMusic(){
+  menuMusic.volume=state.settings.music/100;
+  if(!state.settings.musicOn||route.startsWith('brief/')||['launch','exit'].includes(route)){menuMusic.pause();return;}
+  if(menuMusic.paused)menuMusic.play().catch(error=>{if(!['NotAllowedError','AbortError'].includes(error.name))throw error;});
+}
+document.addEventListener('pointerdown',syncMenuMusic);
+document.addEventListener('keydown',syncMenuMusic);
 const persist = () => localStorage.setItem(key, JSON.stringify(state));
 const navigate = page => { location.hash = page; };
 const button = (label, action, value = '', attrs = '') => `<button class="metal" data-action="${action}" data-value="${escapeHTML(value)}" ${attrs}>${escapeHTML(label)}</button>`;
@@ -45,6 +54,7 @@ async function render(){
   stopBriefing();stopBriefing=()=>{};
   const current=++revision;binding=null;route=location.hash.slice(1);if(route==='')route='home';
   if(route.startsWith('solo/')){state.campaign=route.split('/')[1];persist();route='solo';}
+  syncMenuMusic();
   draft=structuredClone({settings:state.settings,bindings:state.bindings});
   $('#stage').className=route==='home'?'':route==='solo'?'map':'sub';$('#hint').textContent='';
   if(route.startsWith('brief/')){
