@@ -1,9 +1,5 @@
-.debrief header{display:flex;justify-content:space-between;align-items:start;height:115px}
-.debrief h1{font-size:38px;max-width:1120px}.debrief .preview-controls{text-align:right;font-size:12px;color:#9cb6b1}.preview-controls label{display:block;margin-bottom:12px}.preview-controls select{max-width:360px;font-size:14px}
-.debrief .hyde-content{height:746px}.debrief-side{display:flex;flex-direction:column;gap:20px;min-width:0}
-.debrief-card{background:linear-gradient(115deg,#08171eea,#08171eaf);border-left:2px solid #89aca780;padding:24px 28px}.debrief-card h2{font-size:12px;letter-spacing:2px;color:#96b8b1;margin:0 0 18px;text-transform:uppercase}
-.debrief-summary{display:grid;grid-template-columns:1fr 1fr;gap:25px}.debrief-summary small{display:block;color:#9db7b1;font-size:12px;letter-spacing:1px;margin-bottom:10px}.debrief-summary strong{font-size:30px;font-weight:400}.debrief-summary span{display:block;color:#9db7b1;font-size:13px;margin-top:8px}
-.debrief table{width:100%;border-collapse:collapse;font-size:17px}.debrief th{font-size:12px;color:#9db7b1;font-weight:400;text-align:right;padding-bottom:16px}.debrief th:first-child,.debrief td:first-child{text-align:left}.debrief td{text-align:right;padding:14px 0;border-top:1px solid #8ab8b628}
-.debrief-log{flex:1;min-height:0;display:flex;flex-direction:column}.debrief-log ol{list-style:none;margin:0;padding:0;overflow:auto;min-height:0}.debrief-log li{display:flex;gap:20px;padding:12px 0;border-top:1px solid #8ab8b628;font-size:15px;line-height:1.5}.debrief-log time{color:#8fb5af;font-variant-numeric:tabular-nums}.debrief-log p{font-size:14px;color:#9db7b1;margin:12px 0 0}
-.debrief-map{width:100%;height:100%;object-fit:contain;display:block}.debrief .hyde-map-frame{background:#071014}.debrief-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.debrief-overlay circle{fill:#b8e4d333;stroke:#c6f8e6;stroke-width:2}.debrief-overlay text{fill:#f0fffa;font:14px Xolonium;paint-order:stroke;stroke:#071014;stroke-width:4px}
-.debrief footer{align-items:center}.debrief .timeline{flex:1;display:flex;align-items:center;gap:18px;margin:0 25px}.debrief .timeline input{width:100%}.debrief output{font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums}.debrief a.metal{display:flex;align-items:center;text-decoration:none;position:relative}
+/* The game's debriefing screen, in its native 1920 x 1080 layout. */
+#stage.debrief-screen{background:#000 url('assets/debrief-background.png') 0 0/1920px 1080px no-repeat}
+.debrief-screen canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.debrief-screen .metal{position:absolute;top:1000px;width:400px;height:56px;min-height:56px;font-size:19px;padding:0 40px}
+#restart{left:24px}#close{left:1496px}
