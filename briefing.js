@@ -13,7 +13,22 @@ async function loadBriefing(id){
   if(!SATELLITE_BRIEFING_PATHS[id])throw Error(`Satellite map missing : ${id}`);
   return {...BRIEFINGS[id],aerial:SATELLITE_BRIEFING_PATHS[id]};
 }
-const loadBriefingModels=data=>Promise.all(data.modelKeys.map(key=>loadBriefingScript(`assets/briefings/models/${key}.js`)));
+const loadBriefingModels=data=>Promise.all(data.modelKeys.map(async key=>{
+  if(key.startsWith('native-')){
+    // The local preview server reads the installed SKLHD (map null); the public site uses static copies.
+    if(NATIVE_MODEL_FILES===null){
+      const [,mission,vehicle]=key.split('-');
+      const response=await fetch(`/native-model/${mission}/${vehicle}`,{cache:'no-store'});
+      if(!response.ok)throw Error(`Cannot read installed SKLHD: ${key}`);
+      BRIEFING_MODELS[key]=await response.json();
+    }else{
+      const file=NATIVE_MODEL_FILES[key];
+      if(!file)throw Error(`Briefing vehicle missing : ${key}`);
+      await loadBriefingScript(`assets/briefings/models/${file}.js`);
+      BRIEFING_MODELS[key]=BRIEFING_MODELS[file];
+    }
+  }else await loadBriefingScript(`assets/briefings/models/${key}.js`);
+}));
 
 const briefingMarkup = (id,name,data) => `<article class="hyde-briefing">
   <header><span class="hyde-kicker">${{129:'RESISTANCE',132:'TAERKASTENS',134:'GHORKOVS',135:'TRAINING'}[data.events[0].tile]} / OPERATION DOSSIER ${String(id).padStart(2,'0')}</span><span class="hyde-subtitle">${({25:'Training 1',26:'Training 2',1:'Training 3'})[id]||`Mission ${String(id).padStart(2,'0')}`}</span><h1>${name}</h1></header>
