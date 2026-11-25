@@ -14,6 +14,17 @@ const loadImage=src=>new Promise((resolve,reject)=>{const i=new Image();i.onload
 const campaignOf=id=>Object.keys(XP_CAMPAIGNS).find(k=>XP_CAMPAIGNS[k].ids.includes(id))||'resistance';
 const missionName=id=>campaignOf(id)==='resistance'?GAME_TEXT[1800+id]:XP_TEXTS.en[id].name;
 const named=id=>{const t=GAME_TEXT[id];return t&&t!=='<>'?t:' ';};
+// Shell sounds of world.ini: objectappear, sectorconquered, vhcldestroyed and bldgconquered (volume / 127).
+const audio=new AudioContext();
+const SOUNDS=Object.fromEntries(Object.entries({appear:['assets/briefing-hyde/object.wav',1],sector:['assets/debrief-sounds/sector.wav',90/127],
+  destroyed:['assets/debrief-sounds/destroyed.wav',60/127],upgrade:['assets/debrief-sounds/destroyed.wav',60/127]}).map(([name,[src,volume]])=>
+  [name,{volume,buffer:fetch(src).then(r=>{if(!r.ok)throw Error(`Missing sound: ${src}`);return r.arrayBuffer();}).then(b=>audio.decodeAudioData(b))}]));
+const play=async name=>{
+  const {buffer,volume}=SOUNDS[name],source=audio.createBufferSource(),gain=audio.createGain();
+  source.buffer=await buffer;gain.gain.value=volume;source.connect(gain).connect(audio.destination);source.start();
+};
+// Browsers start audio only after an interaction with the page.
+for(const type of ['pointerdown','keydown'])addEventListener(type,()=>audio.resume(),{once:true});
 const clock=ticks=>{const s=Math.floor(ticks/1024);return [s/3600|0,(s/60|0)%60,s%60].map(v=>String(v).padStart(2,'0')).join(':');};
 
 let run=0;
@@ -35,6 +46,7 @@ async function show(){
   const zoomFrom=[2*d.focus[0]/w-1-1/w,2*d.focus[1]/h-1-1/h,2*d.focus[0]/w-1+1/w,2*d.focus[1]/h-1+1/h].map(clip);
   const start=[...d.owners].map(c=>parseInt(c,16));
   let zoomStart=performance.now(),historyStart=null,state,applied;
+  play('appear');
   const reset=()=>{
     state={own:start.slice(),stats:Array.from({length:8},()=>({score:0,kills:0,byUser:0})),upgrades:[],last:0};applied=0;
   };
@@ -71,7 +83,10 @@ async function show(){
     if(zoom<1){requestAnimationFrame(frame);return;}
     historyStart??=now;
     const dtime=Math.min((now-historyStart)*SPEED,d.duration);
-    while(applied<d.events.length&&d.events[applied][0]<=dtime)apply(d.events[applied++]);
+    // Like the game, each newly replayed conquest, destruction and upgrade sounds once.
+    const heard=new Set();
+    while(applied<d.events.length&&d.events[applied][0]<=dtime){const e=d.events[applied++];apply(e);heard.add(e[1]);}
+    for(const [kind,sound] of [[0,'sector'],[1,'destroyed'],[3,'upgrade']])if(heard.has(kind))play(sound);
     // Sector owners: a cross in each gameplay sector.
     ctx.lineWidth=2;
     for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
