@@ -14,4 +14,4 @@ The mission launch screen ends the presentation; the game itself does not run in
 
 This directory contains the static website and its assets. It runs locally or on GitHub Pages without a build step. Production tools and working files are maintained separately in `work/main_menu`.
 
-Briefing vehicles are static copies of the game's installed HD models (`assets/briefings/models/native-*.js`, indexed by `assets/briefings/native-models.js`), written by `work/main_menu/export-native-models.py`. The local preview server `serve-native-briefings.py` reads the installed models directly instead.
+Briefing vehicles and buildings (beam gates, key sectors, tech upgrades) are static copies of the game's installed HD models (`assets/briefings/models/native-*.js`, sharing `assets/briefings/textures`, indexed by `assets/briefings/native-models.js`), written by `work/main_menu/export-native-models.py`. Every beam gate is the game's BEAMGATE assembly, with its SET's textures. The local preview server `serve-native-briefings.py` reads the installed vehicles directly instead.

@@ -14,20 +14,18 @@ async function loadBriefing(id){
   return {...BRIEFINGS[id],aerial:SATELLITE_BRIEFING_PATHS[id]};
 }
 const loadBriefingModels=data=>Promise.all(data.modelKeys.map(async key=>{
-  if(key.startsWith('native-')){
-    // The local preview server reads the installed SKLHD (map null); the public site uses static copies.
-    if(NATIVE_MODEL_FILES===null){
-      const [,mission,vehicle]=key.split('-');
-      const response=await fetch(`/native-model/${mission}/${vehicle}`,{cache:'no-store'});
-      if(!response.ok)throw Error(`Cannot read installed SKLHD: ${key}`);
-      BRIEFING_MODELS[key]=await response.json();
-    }else{
-      const file=NATIVE_MODEL_FILES[key];
-      if(!file)throw Error(`Briefing vehicle missing : ${key}`);
-      await loadBriefingScript(`assets/briefings/models/${file}.js`);
-      BRIEFING_MODELS[key]=BRIEFING_MODELS[file];
-    }
-  }else await loadBriefingScript(`assets/briefings/models/${key}.js`);
+  // Static copies of the installed models; the local preview server reads the installed vehicles live.
+  if(NATIVE_MODEL_LIVE&&key.startsWith('native-')){
+    const [,mission,vehicle]=key.split('-');
+    const response=await fetch(`/native-model/${mission}/${vehicle}`,{cache:'no-store'});
+    if(!response.ok)throw Error(`Cannot read installed SKLHD: ${key}`);
+    BRIEFING_MODELS[key]=await response.json();
+  }else{
+    const file=NATIVE_MODEL_FILES[key];
+    if(!file)throw Error(`Briefing model missing : ${key}`);
+    await loadBriefingScript(`assets/briefings/models/${file}.js`);
+    BRIEFING_MODELS[key]=BRIEFING_MODELS[file];
+  }
 }));
 
 const briefingMarkup = (id,name,data) => `<article class="hyde-briefing">
