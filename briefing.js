@@ -80,16 +80,26 @@ function mountBriefing(root, data, text, settings) {
     marker.onclick=step.onclick;q('.hyde-markers').append(marker);markerButtons.push(marker);
   });
   const ctx=document.createElement('canvas').getContext('2d');ctx.font='19px Xolonium';
+  // Original layout: '\' ends a line of a paragraph, a blank line ("\\" or "\ \") separates
+  // paragraphs, and indented lines (a quote's attribution) stand apart.
+  let layout='',wasIndented=false;
+  for(const raw of text.split('\\')){
+    const content=raw.trimStart();
+    if(!content.trim()){if(layout&&!layout.endsWith('\n'))layout+='\n\n';wasIndented=false;continue;}
+    const indented=raw.length-content.length>=2;
+    if(layout&&!layout.endsWith('\n'))layout+=indented!==wasIndented?'\n':' ';
+    layout+=content;wasIndented=indented;
+  }
   const lines=[];
-  for(const paragraph of text.split('\\\\').map(p=>p.replaceAll('\\',' '))){
+  for(const segment of layout.split('\n')){
     let line='';
-    for(const word of paragraph.split(' ')){
+    for(const word of segment.split(' ').filter(Boolean)){
       const next=line?line+' '+word:word;
       if(line&&ctx.measureText(next).width>790){lines.push(line);line=word;}else line=next;
     }
     lines.push(line);
-    lines.push('');
   }
+  while(lines.length&&!lines.at(-1))lines.pop();
   const textNodes=lines.map(line=>{const span=document.createElement('span');span.textContent=line||'\u00a0';q('.hyde-text').append(span);return span;});
   function revealText(){
     const count=Math.min(lines.length,Math.floor(textElapsed/500));
